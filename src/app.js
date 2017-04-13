@@ -1,4 +1,11 @@
+//------------------------------------
+// DATA
+//------------------------------------
 import points from './points.js'
+
+//------------------------------------
+// LIST
+//------------------------------------
 function LocationsViewModel() {
     var self = this;
     // add points to model
@@ -13,7 +20,7 @@ function LocationsViewModel() {
         }
       })
       self.points(filtered)
-      renderPoints(filtered)
+      renderMap(filtered)
     });
 
     self.item_select = function(item){
@@ -25,9 +32,14 @@ function LocationsViewModel() {
 ko.applyBindings(new LocationsViewModel());
 
 
+
+//------------------------------------
+// MAP
+//------------------------------------
 // Create a map variable
-let map;
+let map, bounds, bubble;
 let markers = [];
+
 // Function to initialize the map within the map div
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
@@ -36,9 +48,9 @@ function initMap() {
     maxZoom: 14,
   });
   // Create a single latLng literal object.
-  renderPoints(points)
-
+  renderMap(points)
 }
+
 function clearPoints(){
   markers.map(m => {
     return m.setMap(null)
@@ -47,25 +59,24 @@ function clearPoints(){
 }
 
 function select_marker_from_list(id){
-  let point = get_marker_by_id(id)
-  return toggleBounce(point)
+  const point = get_marker_by_id(id)
+  populateInfoWindow(point)
+  toggleBounce(point)
 }
 
 function get_marker_by_id(id){
-  let point = markers.find(m => {
-    console.log(m.id)
+  return markers.find(m => {
     if(m.id == id){
       return m
     }
   })
-  return point
 }
 
-function renderPoints(points){
+function renderMap(points){
   clearPoints()
   // iterate over points and create all markers
-  let bubble = new google.maps.InfoWindow()
-  let bounds = new google.maps.LatLngBounds();
+  bubble = new google.maps.InfoWindow()
+  bounds = new google.maps.LatLngBounds();
   markers = points.map(p => {
     const marker = new google.maps.Marker({
       position: p.pos,
@@ -85,20 +96,23 @@ function renderPoints(points){
   // Opens the infowindow
 }
 
+// Turn marker bounce animation on and off
 function toggleBounce(m) {
+  // first make all stop
   markers.map(point => {
     return point.setAnimation(null)
   })
+  // Then start only the onw we want
   m.setAnimation(google.maps.Animation.BOUNCE);
 }
 
-function populateInfoWindow(point, infowindow){
-  if(infowindow.marker != point){
-    infowindow.marker = point;
-    infowindow.setContent('<div>' + point.title + '</div>');
-    infowindow.open(map, point);
-    infowindow.addListener('closeclick', () =>{
-      infowindow.marker = null;
+function populateInfoWindow(point){
+  if(bubble.marker != point){
+    bubble.marker = point;
+    bubble.setContent('<div>' + point.title + '</div>');
+    bubble.open(map, point);
+    bubble.addListener('closeclick', () =>{
+      bubble.marker = null;
     });
   }
 }
