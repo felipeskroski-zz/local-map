@@ -11,14 +11,14 @@
 
    <div id="map"></div>
    <div id="list">
-     <div>
+     <div id="filter">
        <input type="text" value="" id="search" placeholder="Search" data-bind="textInput: filter">
      </div>
-     <div data-bind="foreach: points">
-      <div>
+     <ul data-bind="foreach: points">
+      <li data-bind="click: $parent.item_select">
         <p data-bind="text: title"/>
-      </div>
-    </div>
+      </li>
+    </ul>
    </div>
    <!--TODO: Insert your API Key in the below call to load the API.-->
    <script async defer
