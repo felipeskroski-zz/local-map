@@ -1,0 +1,32 @@
+
+<html>
+ <head>
+ <!-- styles put here, but you can include a CSS file and reference it instead! -->
+   <link rel="stylesheet" type="text/css" href="dist/bundle.css">
+   <script type='text/javascript' src='src/knockout/knockout-3.4.2.js'></script>
+
+
+ </head>
+ <body>
+
+   <div id="map"></div>
+   <div id="list">
+     <div>
+       <input type="text" value="" id="search" placeholder="Search" data-bind="textInput: filter">
+     </div>
+     <div data-bind="foreach: points">
+      <div>
+        <p data-bind="text: title"/>
+      </div>
+    </div>
+   </div>
+   <!--TODO: Insert your API Key in the below call to load the API.-->
+   <script async defer
+     src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBYwcxCaD4vhmiglZZxBuC6-X-T4JVnnX8&callback=initMap">
+   </script>
+   <script type='text/javascript' src='dist/bundle.js'></script>
+   <script>
+
+   </script>
+ </body>
+</html>

@@ -1,0 +1,15 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0; }
+
+body {
+  display: flex;
+  flex-direction: row; }
+
+#map {
+  flex: 3; }
+
+#list {
+  flex: 1;
+  background: #ccc; }
