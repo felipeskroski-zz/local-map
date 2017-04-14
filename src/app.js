@@ -32,6 +32,19 @@ function LocationsViewModel() {
 ko.applyBindings(new LocationsViewModel());
 
 
+// gets tides from worldtides.com
+function get_tides(pos){
+  const api = `https://www.worldtides.info/api?heights&lat=${pos.lat}&lon=${pos.lng}&key=b2d957df-b47b-42b3-b815-65d0dbcfedcf`
+  fetch(api).then(function(response) {
+	// Convert to JSON
+	return response.json();
+  }).then(function(j) {
+  	// Yay, `j` is a JavaScript object
+  	console.log(j);
+  });
+
+}
+
 
 //------------------------------------
 // MAP
@@ -71,6 +84,13 @@ function get_marker_by_id(id){
     }
   })
 }
+function get_point_by_id(id){
+  return points.find(p => {
+    if(p.id == id){
+      return p
+    }
+  })
+}
 
 function renderMap(points){
   clearPoints()
@@ -107,6 +127,8 @@ function toggleBounce(m) {
 }
 
 function populateInfoWindow(point){
+  const pos = get_point_by_id(point.id)
+  get_tides(pos.pos)
   if(bubble.marker != point){
     bubble.marker = point;
     bubble.setContent('<div>' + point.title + '</div>');
