@@ -39,20 +39,19 @@ async function get_tides(pos) {
   const api = `https://www.worldtides.info/api?extremes&datum=CD&lat=${pos.lat}&lon=${pos.lng}&step=${1800*6}&key=b2d957df-b47b-42b3-b815-65d0dbcfedcf`
   // await response of fetch call
   let response = await fetch(api);
-  // only proceed once promise is resolved
-  let data = await response.json();
-  // only proceed once second promise is resolved
-
-  return data.extremes;
+  try{
+    let data = await response.json();
+    const t_data = data.extremes;
+    let tides = "<h4>Tides</h4>"
+    t_data.forEach(t => {
+      tides += `${tide_time(t.date)}: <b>${t.height}</b> ${t.type}<br> `
+    })
+    return tides;
+  }catch(e){
+    console.log(e.message)
+    return `Error: ${e.message}`;
+  }
 }
-
-function get_flickr_img(farm, server, id, secret){
-  return `https://farm${farm}.staticflickr.com/${server}/${id}_${secret}_m.jpg`;
-}
-
-function string_parameterize(str1) {
-    return str1.trim().toLowerCase().replace(/[^a-zA-Z0-9 -]/, "").replace(/\s/g, "");
-};
 
 async function flickr_search(title, pos){
   const t = string_parameterize(title)
@@ -70,9 +69,6 @@ async function flickr_search(title, pos){
   }catch(e){
     return "https://im-1.msw.ms/md/image.php?id=27135&type=PHOTOLAB&resize_type=STREAM_MEDIUM_SQUARE&fromS3";
   }
-
-
-
 }
 
 
@@ -89,6 +85,13 @@ function tide_hr(date) {
   return dt.getHours()
 }
 
+function get_flickr_img(farm, server, id, secret){
+  return `https://farm${farm}.staticflickr.com/${server}/${id}_${secret}_m.jpg`;
+}
+
+function string_parameterize(str1) {
+    return str1.trim().toLowerCase().replace(/[^a-zA-Z0-9 -]/, "").replace(/\s/g, "");
+};
 
 //------------------------------------
 // MAP
@@ -181,20 +184,8 @@ async function populateInfoWindow(point){
     });
   }
   const image = await flickr_search(pos.title, pos.pos)
-  const tides = get_tides(pos.pos)
-  .then(data =>{
-    console.log(data)
-    let tides = "<h4>Tides</h4>"
-    data.forEach(t => {
-      tides += `${tide_time(t.date)}: <b>${t.height}</b> ${t.type}<br> `
-    })
-    bubble.setContent(`<div style="height: 500px; overflow: hidden;"><h3>${point.title}</h3><br><img src="${image}"/> <br>${tides}</div>`);
-  }).catch(
-    err => {
-      bubble.setContent(`<div><h3>${point.title}</h3> <br>Error: ${err.message}</div>`);
-      console.log(err.message)
-    }
-  )
+  const tides = await get_tides(pos.pos)
+  bubble.setContent(`<div style="height: 500px; overflow: hidden;"><h3>${point.title}</h3><br><img src="${image}"/> <br>${tides}</div>`);
 
 }
 
