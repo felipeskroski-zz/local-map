@@ -1,3 +1,4 @@
+var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
@@ -20,13 +21,18 @@ module.exports = {
             presets: ['env'],
           }
         }
-      }
-    ]
+      },
+    ],
   },
   plugins: [
     new ExtractTextPlugin({ // define where to save the file
       filename: 'dist/bundle.css',
       allChunks: true,
     }),
-  ]
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production')
+    }),
+    new webpack.optimize.UglifyJsPlugin(), //minify everything
+    new webpack.optimize.AggressiveMergingPlugin()//Merge chunks
+  ],
 }

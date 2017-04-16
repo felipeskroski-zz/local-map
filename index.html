@@ -12,13 +12,14 @@
    <div id="map"></div>
    <div id="list">
      <div id="filter">
-       <input type="text" value="" id="search" placeholder="Search" data-bind="textInput: filter">
+       <input type="text" value="" id="search" placeholder="Filter" data-bind="textInput: filter">
      </div>
      <ul data-bind="foreach: points">
       <li data-bind="click: $parent.item_select">
         <p data-bind="text: title"/>
       </li>
     </ul>
+    <p class="small-copy"> Images by <a href="http://www.flickr.com">flickr</a>, tides by <a href="https://www.worldtides.info/">worldtides</a>
    </div>
    <!--TODO: Insert your API Key in the below call to load the API.-->
    <script async defer

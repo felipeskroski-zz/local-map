@@ -1,15 +1,1 @@
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0; }
-
-body {
-  display: flex;
-  flex-direction: row; }
-
-#map {
-  flex: 3; }
-
-#list {
-  flex: 1;
-  background: #ccc; }
+@import url(https://fonts.googleapis.com/css?family=PT+Sans);body,html{height:100%;margin:0;padding:0}body{display:flex;flex-direction:row;font-family:PT Sans,sans-serif}#map{flex:3}#list{flex:1;background:#555}#list ul{margin:0;padding:0;list-style:none}#list li{padding:10px 20px;border-bottom:1px solid #626262;cursor:pointer}#list li:hover{background:#5d5d5d}#list p{color:#fff}#list #filter input{padding:20px;font-size:16px;width:100%;border:1px;display:block}#list .small-copy{padding:20px;font-size:13px;color:#999}#list a{color:#aaa}
