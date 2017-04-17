@@ -18,6 +18,9 @@ function LocationsViewModel() {
   // makes the filter box observable
   self.filter = ko.observable()
 
+  // makes the filter box observable
+  self.list_status = ko.observable("")
+
   // filters list based on filter box
   self.filter.subscribe(function(value) {
     // filter points acording to filter box string
@@ -35,6 +38,14 @@ function LocationsViewModel() {
   // activate item on click
   self.item_select = function(item){
     return select_marker_from_list(item.id)
+  };
+  // toggle list on mobile views
+  self.toggle_list = function(){
+    if(self.list_status()==""){
+      self.list_status("collapsed")
+    }else{
+      self.list_status("")
+    }
   };
 }
 ko.applyBindings(new LocationsViewModel());

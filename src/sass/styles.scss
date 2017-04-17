@@ -15,11 +15,55 @@ body{
 }
 
 #map {
-  flex: 3;
+  flex: 4;
+  @media (max-width: 1024px) {
+    flex: 3;
+  }
+  @media (max-width: 768px) {
+    flex: 2;
+  }
+
 }
 #list {
   flex: 1;
   background: $darkgrey;
+  height: 100%;
+
+  @media (max-width: 480px) {
+    display: block;
+    width: 80%;
+    flex: none;
+    position: absolute;
+    left: 0;
+    transition: left 0.5s ease;
+    z-index: 10;
+    &.collapsed{
+      left: -79%;
+    }
+    &.collapsed .list-toggle:before{
+      content: '→';
+    }
+    .list-toggle{
+      display: block;
+      width: 44px;
+      height: 44px;
+      right: -44px;
+      top: 50%;
+      margin-top: -22px;
+      position: absolute;
+      background: #444;
+      color: white;
+      border-radius: 0 5px 5px 0;
+      &:before{
+        font-size: 22px;
+        content: '\2190';
+        position: absolute;
+        top: 6px;
+        left: 14px;
+      }
+    }
+  }
+
   ul{
     margin: 0;
     padding: 0;
@@ -39,10 +83,10 @@ body{
   #filter input{
     padding: 20px 20px;
     font-size: 16px;
-    width: 100%;
-
+    width: calc(100% - 41px);
     border: 1px ;
     display: block;
+    font-family: 'PT Mono', sans-serif;
   }
   .small-copy{
     padding: 20px 20px;
