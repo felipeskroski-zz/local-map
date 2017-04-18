@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
  <head>
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="stylesheet" type="text/css" href="dist/bundle.css">
-   <script type="text/javascript" src="src/knockout/knockout-3.4.2.js"></script>
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="dist/bundle.css">
+  <title>Local Map</title>
  </head>
  <body>
-   <div id="list" data-bind="css: list_status">
+   <aside id="list" data-bind="css: list_status">
      <div class="list-toggle" data-bind="click: toggle_list"></div>
      <div id="filter">
        <input type="text" value="" id="search" placeholder="Filter" data-bind="textInput: filter">
@@ -17,12 +17,12 @@
         <p data-bind="text: title"/>
       </li>
     </ul>
-    <p class="small-copy"> Images by <a href="http://www.flickr.com">flickr</a>, tides by <a href="https://www.worldtides.info/">worldtides</a>
-   </div>
-   <div id="map"></div>
+    <p class="small-copy"> Images by <a href="http://www.flickr.com">flickr</a>, tides by <a href="https://www.worldtides.info/">worldtides</a></p>
+  </aside>
+   <main id="map"></main>
+   <script src="dist/bundle.js"></script>
    <script async defer
      src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBYwcxCaD4vhmiglZZxBuC6-X-T4JVnnX8&callback=initMap">
    </script>
-   <script type='text/javascript' src='dist/bundle.js'></script>
  </body>
 </html>
