@@ -123,7 +123,7 @@ function renderMap() {
   map.fitBounds(bounds);
 }
 
-function renderBubble() {
+function renderBubble(error = false) {
   let imgTag = '';
   let tides = '';
   if (bubble.img) {
@@ -131,12 +131,21 @@ function renderBubble() {
   } else {
     imgTag = '<div> Loading image... </div>';
   }
-  if (bubble.tides){
+  if (bubble.tides) {
     tides = bubble.tides;
-  }else{
-    tides = '<div> Loading tides... </div>'
+  } else {
+    tides = '<div> Loading tides... </div>';
   }
-  bubble.setContent(`<div><h3>${bubble.marker.title}</h3>${imgTag}${tides}</div>`);
+  if (error) {
+    // if doesn't get any image from flickr inserts a generic one
+    if (error.message.includes('farm')) {
+      const imgTag = '<img width="200" src="https://wellingtonboardriders.files.wordpress.com/2015/03/airport-rights.jpg" />';
+      return bubble.setContent(`<div><h3>${bubble.marker.title}</h3>${imgTag}${tides}</div>`);
+    }
+    // renders the error message
+    return bubble.setContent(`<div><h3>${bubble.marker.title}</h3><b>${error}</b>${imgTag}${tides}</div>`);
+  }
+  return bubble.setContent(`<div><h3>${bubble.marker.title}</h3>${imgTag}${tides}</div>`);
 }
 // Populates info window with info related to the point
 function populateInfoWindow(point) {
@@ -149,7 +158,7 @@ function populateInfoWindow(point) {
     bubble.img = false;
     bubble.tides = false;
     // sets content to loading while receives tides and images
-    renderBubble()
+    renderBubble();
     bubble.open(map, point);
     // handle close infowindow
     bubble.addListener('closeclick', () => {
@@ -163,8 +172,8 @@ function populateInfoWindow(point) {
     const p = data.photos.photo[0];
     const imgUrl = getFlickrImg(p.farm, p.server, p.id, p.secret);
     bubble.img = imgUrl;
-    return renderBubble()
-  }).catch(err => 'https://im-1.msw.ms/md/image.php?id=27135&type=PHOTOLAB&resize_type=STREAM_MEDIUM_SQUARE&fromS3');
+    return renderBubble();
+  }).catch(err => renderBubble(err));
 
   getTides(pos.pos)
   .then(response => response.json())
@@ -190,12 +199,8 @@ function populateInfoWindow(point) {
     }
     tides += '</table>';
     bubble.tides = tides;
-    renderBubble()
-  }).catch(err => {
-    bubble.setContent(`<div><h3>${point.title}</h3> <br>${err.message}</div>`);
-  })
-  // set content with receved data from apis
-
+    return renderBubble();
+  }).catch(err => renderBubble(err));
 }
 
 // map helper: handles list item selection
