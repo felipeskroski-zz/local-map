@@ -237,9 +237,14 @@ function toggleBounce(m) {
   m.setAnimation(google.maps.Animation.BOUNCE);
 }
 
+function mapError() {
+  const div = document.getElementById('map');
+  div.innerHTML = `<div><h2 style="text-align: center;">Sorry we couldn't load the map. Try again later.</h2></div>`;
+}
 
 // makes init map a window function this is needed when using webpack
 window.initMap = initMap;
+window.mapError = mapError;
 
 
 //------------------------------------
